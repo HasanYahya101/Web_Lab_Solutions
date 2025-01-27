@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Status Codes Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .response {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .loading {
+            color: #999;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .redirect {
+            color: orange;
+        }
+
+        .info {
+            color: #0088cc;
+        }
+
+        .data {
+            margin-top: 20px;
+            font-style: italic;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HTTP Status Codes Simulation</h1>
+    <button onclick="goToForm()">Go to Form</button>
+
+    <div id="formSection" class="hidden">
+        <h3>Form-Based Response</h3>
+        <form id="userForm" onsubmit="handleFormSubmit(event)">
+            <label for="userInput">Enter something (leave empty for error):</label><br>
+            <input type="text" id="userInput" name="userInput" /><br><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="buttonsSection" class="hidden">
+        <button onclick="simulateRedirect()">Refresh</button>
+        <button onclick="simulateDatabaseConnection()">Connect to Database</button>
+    </div>
+
+    <div id="response" class="response"></div>
+
+    <div id="storedData" class="data"></div>
+
+    <script>
+        let storedInput = '';
+        let storedStatusCode = '';
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const userInput = document.getElementById('userInput').value;
+            const responseElement = document.getElementById('response');
+
+            responseElement.innerHTML = 'Loading... <span class="loading">Please wait</span>';
+
+            setTimeout(() => {
+                let message = '';
+                let statusClass = '';
+
+                if (userInput === '') {
+                    message = 'Client Error: Bad Request (400) - Input is required!';
+                    statusClass = 'error';
+                    storedStatusCode = '400';
+                } else {
+                    message = `Success: Your input is received (200) - You entered: ${userInput}`;
+                    statusClass = 'success';
+                    storedStatusCode = '200';
+                }
+
+                storedInput = userInput;
+
+                responseElement.innerHTML = `HTTP Status Code: ${storedStatusCode} - ${message}`;
+                responseElement.className = statusClass;
+
+                console.log(`HTTP Status Code: ${storedStatusCode} - ${message}`);
+            }, 1000);
+        }
+
+        function simulateRedirect() {
+            const responseElement = document.getElementById('response');
+            responseElement.innerHTML = 'Loading... <span class="loading">Redirecting...</span>';
+
+            setTimeout(() => {
+                const message = 'Redirection (302): You are being redirected to another page.';
+                responseElement.innerHTML = `HTTP Status Code: 302 - ${message}`;
+                responseElement.className = 'redirect';
+
+                console.log(`HTTP Status Code: 302 - ${message}`);
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 6000);
+            }, 1000);
+        }
+
+        function simulateDatabaseConnection() {
+            const responseElement = document.getElementById('response');
+            responseElement.innerHTML = 'Loading... <span class="loading">Connecting to database...</span>';
+
+            setTimeout(() => {
+                const message = 'Error: Internal Server Error (500) - Database connection failed.';
+                responseElement.innerHTML = `HTTP Status Code: 500 - ${message}`;
+                responseElement.className = 'error';
+
+                console.log(`HTTP Status Code: 500 - ${message}`);
+
+                document.getElementById('storedData').innerHTML = 'No data can be fetched because the database connection failed.';
+            }, 1500);
+        }
+
+        function goToForm() {
+            const responseElement = document.getElementById('response');
+
+            responseElement.innerHTML = 'Loading... <span class="loading">Please wait</span>';
+
+            setTimeout(() => {
+                responseElement.innerHTML = `HTTP Status Code: 100 - Informational response: Continue. The server has received your request and is awaiting further data.`;
+                responseElement.className = 'info';
+
+                console.log(`HTTP Status Code: 100 - Informational response: Continue. The server has received your request and is awaiting further data.`);
+
+                setTimeout(() => {
+                    responseElement.innerHTML = `HTTP Status Code: 102 - Processing... The server is still working on your request.`;
+                    responseElement.className = 'info';
+
+                    console.log(`HTTP Status Code: 102 - Processing... The server is still working on your request.`);
+
+                    setTimeout(() => {
+                        responseElement.innerHTML = 'HTTP Status Code: 200 - Success: Your request was processed successfully!';
+                        responseElement.className = 'success';
+
+                        console.log(`HTTP Status Code: 200 - Success: Your request was processed successfully!`);
+                    }, 2000);
+                }, 1500);
+            }, 1000);
+
+            setTimeout(() => {
+                document.getElementById('formSection').classList.remove('hidden');
+                document.getElementById('buttonsSection').classList.remove('hidden');
+            }, 4000);
+        }
+    </script>
+</body>
+
+</html>
