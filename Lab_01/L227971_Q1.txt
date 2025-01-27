@@ -1,0 +1,21 @@
+1- Go to Form:
+
+HTTP Status Code: 100 - Informational response: Continue. The server has received your request and is awaiting further data.
+task1.html:161 HTTP Status Code: 102 - Processing... The server is still working on your request.
+task1.html:167 HTTP Status Code: 200 - Success: Your request was processed successfully!
+
+2- Submit (without entering any input):
+
+HTTP Status Code: 400 - Client Error: Bad Request (400) - Input is required!
+
+3- Submit (after filling the form):
+
+HTTP Status Code: 200 - Success: Your input is received (200) - You entered: Hasan
+
+4- Connect to Database:
+
+HTTP Status Code: 500 - Error: Internal Server Error (500) - Database connection failed.
+
+5- Refresh:
+
+HTTP Status Code: 302 - Redirection (302): You are being redirected to another page.
