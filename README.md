@@ -1,7 +1,7 @@
 # Web Engineering: Lab Solutions
 ## Spring 2025 (Fast Nuces Lhr)
 
-This repository contains the solutions to the Web Lab questions from my lectures at the Spring 2024 semester at FAST NUCES Lhr. These solutions are intended to help students who are struggling with understanding the concepts and solving the assignments.
+This repository contains the solutions to the Web Lab questions from my lectures at the Spring 2025 semester at FAST NUCES Lhr. These solutions are intended to help students who are struggling with understanding the concepts and solving the assignments.
 
 _**Note:** that these solutions are provided for the Lab (subject), not the theory subject. Therefore, they may not be useful for the theory subject._
 
