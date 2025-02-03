@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to bottom right, #e0f7e0, #e0f0ff);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .map-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: collapse;
+            overflow: hidden;
+        }
+
+        .map-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: collapse;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .products-table th {
+            background: #4CAF50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .products-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .products-table img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+
+        .add-to-cart {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: collapse;
+            cursor: pointer;
+        }
+
+        .add-to-cart:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .categories,
+        .recommended {
+            background: white;
+            padding: 20px;
+            border-radius: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .categories ul,
+        .recommended ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .categories li,
+        .recommended li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to Our Shopping Platform</h1>
+
+        <div class="map-container">
+            <img src="./map.png" alt="Store Location Map">
+        </div>
+
+        <h2>Our Products</h2>
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Image</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Add to Cart</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Wireless Headphones</td>
+                    <td><img src="./headphone.PNG" alt="Wireless Headphones"></td>
+                    <td>High-quality sound with noise cancellation.</td>
+                    <td>$99.99</td>
+                    <td>In Stock</td>
+                    <td><button class="add-to-cart">Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Smart Watch</td>
+                    <td><img src="./smartwatch.PNG" alt="Smart Watch"></td>
+                    <td>Track your fitness and notifications in style.</td>
+                    <td>$149.99</td>
+                    <td>Out of Stock</td>
+                    <td><button class="add-to-cart" disabled>Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Portable Speaker</td>
+                    <td><img src="./speaker.PNG" alt="Portable Speaker"></td>
+                    <td>Perfect for outdoor adventures, waterproof and durable.</td>
+                    <td>$59.99</td>
+                    <td>In Stock</td>
+                    <td><button class="add-to-cart">Add to Cart</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="categories">
+            <h2>Explore Our Categories</h2>
+            <ul>
+                <li>I. Electronics</li>
+                <li>II. Wearables</li>
+                <li>III. Home Appliances</li>
+                <li>IV. Accessories</li>
+            </ul>
+        </div>
+
+        <div class="recommended">
+            <h2>Recommended Products</h2>
+            <ul>
+                <li>• Wireless Earbuds</li>
+                <li>• Smart Home Assistant</li>
+                <li>• Bluetooth Keyboard</li>
+                <li>• Fitness Tracker</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

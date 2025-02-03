@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: yellow;
+        }
+
+        .special-offer {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Media query for devices between 400px and 600px */
+        @media screen and (min-width: 400px) and (max-width: 600px) {
+            th {
+                background-color: red;
+                color: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Details</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td rowspan="2">Electronics</td>
+            <td>Smartphones</td>
+            <td>Available</td>
+        </tr>
+        <tr>
+            <td>Laptops</td>
+            <td>Out of Stock</td>
+        </tr>
+        <tr>
+            <td rowspan="2">Home Appliances</td>
+            <td>Refrigerators</td>
+            <td>Available</td>
+        </tr>
+        <tr>
+            <td colspan="2">Limited Stock for Washing Machines</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="special-offer">Special Offers on Selected Items!</td>
+        </tr>
+    </table>
+</body>
+
+</html>
