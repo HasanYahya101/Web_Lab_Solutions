@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #0066ff;
+            transition: color 0.3s;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333;
+            line-height: 1.6;
+            margin: 20px 0;
+            transition: color 0.3s;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        li {
+            margin: 10px 0;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #0066ff;
+            padding: 5px;
+            margin: 20px 0;
+        }
+
+        a {
+            color: #0066ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        select,
+        button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="controls">
+        <select id="themeSelect"
+            style="border: 2px solid #0066ff; border-radius: 5px; padding: 8px; cursor: pointer; background-color: white;">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="blue">Blue</option>
+        </select>
+        <button id="toggleDescription"
+            style="border: 2px solid #0066ff; border-radius: 5px; padding: 8px; cursor: pointer; background-color: #0066ff; color: white;">Toggle
+            Description</button>
+    </div>
+
+    <h1>Hasan Yahya</h1>
+
+    <p id="description">
+        Hello! I'm a passionate web development student with a love for creating user-friendly and innovative
+        applications.
+        In my free time, I enjoy hiking, reading science fiction novels, and experimenting with new programming
+        languages.
+        My career goal is to become a full-stack developer.
+    </p>
+
+    <h3>Favorite Programming Languages & Tools</h3>
+    <ul>
+        <li>JavaScript</li>
+        <li>Python</li>
+        <li>GitHub</li>
+    </ul>
+
+    <img src="https://avatars.githubusercontent.com/u/118683092?v=4" alt="Profile Picture" class="profile-image">
+
+    <p>
+        <a href="#" target="_blank">Visit My Favorite Website</a>
+    </p>
+
+    <script>
+        const themeSelect = document.getElementById('themeSelect');
+        const toggleButton = document.getElementById('toggleDescription');
+        const description = document.getElementById('description');
+
+        const themes = {
+            light: {
+                background: '#f5f5f5',
+                text: '#333',
+                heading: '#0066ff'
+            },
+            dark: {
+                background: '#333',
+                text: '#f5f5f5',
+                heading: '#66b3ff'
+            },
+            blue: {
+                background: '#e6f2ff',
+                text: '#003366',
+                heading: '#0066ff'
+            }
+        };
+
+        function applyTheme(theme) {
+            document.body.style.backgroundColor = themes[theme].background;
+            document.body.style.color = themes[theme].text;
+            document.querySelectorAll('h1, h2, h3').forEach(heading => {
+                heading.style.color = themes[theme].heading;
+            });
+        }
+
+        themeSelect.addEventListener('change', (e) => {
+            applyTheme(e.target.value);
+        });
+
+        toggleButton.addEventListener('click', () => {
+            description.style.display = description.style.display === 'none' ? 'block' : 'none';
+        });
+
+        applyTheme('light');
+    </script>
+</body>
+
+</html>
