@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+        }
+
+        .navbar {
+            background-color: #000;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar li {
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 15px 10px;
+            display: block;
+        }
+
+        .navbar a:hover {
+            color: #ffff00;
+        }
+
+        .navbar a.active {
+            color: #ffff00;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #000;
+            width: 120px;
+            display: none;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+            width: 100%;
+        }
+
+        .dropdown-menu a {
+            padding: 10px 15px;
+        }
+
+        .content {
+            padding: 50px 80px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        .feedback-form {
+            max-width: 500px;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        textarea.form-input {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #333;
+        }
+
+        .review-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .review-item h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .delete-btn {
+            background-color: #ff4444;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .coffee-order-form {
+            max-width: 500px;
+            margin: 20px 0;
+        }
+
+        .coffee-image {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .coffee-preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .radio-group {
+            margin: 15px 0;
+        }
+
+        .radio-group label {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#home" class="nav-link" data-page="home">HOME</a></li>
+            <li><a href="#buy-coffee" class="nav-link" data-page="buy-coffee">BUY COFFEE</a></li>
+            <li><a href="#best-articles" class="nav-link" data-page="best-articles">BEST ARTICLES</a></li>
+            <li><a href="#give-feedback" class="nav-link" data-page="give-feedback">GIVE FEEDBACK</a></li>
+            <li><a href="#reviews" class="nav-link" data-page="reviews">REVIEWS</a></li>
+            <li class="dropdown">
+                <a href="#our-branches" class="nav-link" data-page="our-branches">OUR BRANCHES</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#branch1" class="nav-link" data-page="branch1">Branch 1</a></li>
+                    <li><a href="#branch2" class="nav-link" data-page="branch2">Branch 2</a></li>
+                </ul>
+            </li>
+            <li><a href="#contact-us" class="nav-link" data-page="contact-us">CONTACT US</a></li>
+        </ul>
+    </nav>
+
+    <div class="content" id="content">
+        <div id="home" class="page active">
+            <h1>Home Page</h1>
+            <p>Welcome to our website! This is our home page</p>
+        </div>
+
+        <div id="buy-coffee" class="page">
+            <h1>Buy Coffee</h1>
+            <div class="coffee-order-form">
+                <div class="form-group">
+                    <h3>Select Coffee</h3>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="coffee" value="coffee1" checked> Coffee 1
+                        </label>
+                        <label>
+                            <input type="radio" name="coffee" value="coffee2"> Coffee 2
+                        </label>
+                    </div>
+                </div>
+
+                <div class="coffee-image">
+                    <img id="coffeeImage" src="./coffee1.jpeg" alt="Selected coffee" class="coffee-preview">
+                </div>
+
+                <div class="form-group">
+                    <label for="orderName">Enter Your Name:</label>
+                    <input type="text" id="orderName" class="form-input" required>
+                </div>
+
+                <button id="submitOrder" class="btn">Submit Order</button>
+            </div>
+        </div>
+
+        <div id="best-articles" class="page">
+            <h1>Best Articles</h1>
+            <p>Read our best articles about coffee</p>
+        </div>
+
+        <div id="give-feedback" class="page">
+            <h1>Give Feedback</h1>
+            <div class="feedback-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="remarks">Remarks:</label>
+                    <textarea id="remarks" class="form-input" required></textarea>
+                </div>
+                <button id="submitFeedback" class="btn">Submit Feedback</button>
+            </div>
+        </div>
+
+        <div id="reviews" class="page">
+            <h1>Reviews</h1>
+            <div id="reviewsContainer"></div>
+        </div>
+
+        <div id="branch1" class="page">
+            <h1>Branch 1</h1>
+            <p>Our Branch 1 info</p>
+        </div>
+
+        <div id="branch2" class="page">
+            <h1>Branch 2</h1>
+            <p>Our Branch 2 info</p>
+        </div>
+
+        <div id="contact-us" class="page">
+            <h1>Contact us</h1>
+            <p class="tooltip contact-abc">Contact ABC
+                <span class="tooltiptext">Click for more info</span>
+            </p>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>This is modal view</p>
+        </div>
+    </div>
+
+    <script>
+
+        function deleteAllCookies() {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            }
+            loadReviews();
+        }
+
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const cname = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(cname) == 0) {
+                    return c.substring(cname.length, c.length);
+                }
+            }
+            return "";
+        }
+        function loadReviews() {
+            const reviewsContainer = $("#reviewsContainer");
+            reviewsContainer.empty();
+
+            const feedbackCount = getCookie("feedbackCount") || 0;
+
+            if (feedbackCount == 0) {
+                reviewsContainer.html("<p>No reviews yet.</p>");
+                return;
+            }
+
+            for (let i = 1; i <= feedbackCount; i++) {
+                const name = getCookie("name_" + i);
+                const remarks = getCookie("remarks_" + i);
+
+                if (name && remarks) {
+                    const reviewHtml = `
+                            <div class="review-item">
+                                <h2>${name}</h2>
+                                <p>remarks by ${name}</p>
+                                <p>${remarks}</p>
+                            </div>
+                        `;
+                    reviewsContainer.append(reviewHtml);
+                }
+            }
+
+            if (feedbackCount > 0) {
+                reviewsContainer.append('<button class="delete-btn" onclick="deleteAllCookies()">Delete record</button>');
+            }
+        }
+
+        $(document).ready(function () {
+            $(".page").hide();
+            $("#home").show(); // hide except home
+
+            $(".nav-link[data-page='home']").addClass("active");
+
+            $(".dropdown-menu").hide();
+
+            $(".dropdown").hover(  // dropdown
+                function () {
+                    $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
+                },
+                function () {
+                    $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
+                }
+            );
+
+            $(".nav-link").click(function (e) { // Navigation
+                e.preventDefault();
+                $(".nav-link").removeClass("active");
+                $(this).addClass("active");
+                if ($(this).data("page") === "branch1" || $(this).data("page") === "branch2") {
+                    $(".nav-link[data-page='our-branches']").addClass("active");
+                }
+
+                $(".page").hide();
+
+                $("#" + $(this).data("page")).show();
+            });
+
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                $(".nav-link[data-page='" + hash + "']").click();
+            }
+
+            $(".contact-abc").click(function () {
+                $("#contactModal").fadeIn();
+            });
+
+            $(".close").click(function () {
+                $("#contactModal").fadeOut();
+            });
+
+            $(window).click(function (event) {
+                if ($(event.target).is("#contactModal")) {
+                    $("#contactModal").fadeOut();
+                }
+            });
+
+
+            $(".delete-btn").click(function () {
+                deleteAllCookies();
+            });
+
+            $("#submitFeedback").click(function () {
+                const name = $("#name").val().trim();
+                const remarks = $("#remarks").val().trim();
+
+                if (!name || !remarks) {
+                    alert("Please fill in all fields");
+                    return;
+                }
+                let feedbackCount = parseInt(getCookie("feedbackCount") || "0") + 1;
+
+                setCookie("feedbackCount", feedbackCount, 30);
+                setCookie("name_" + feedbackCount, name, 30);
+                setCookie("remarks_" + feedbackCount, remarks, 30);
+
+                $("#name").val("");
+                $("#remarks").val("");
+
+                alert("Feedback submitted successfully!");
+            });
+
+            $(".nav-link[data-page='reviews']").click(function () {
+                loadReviews();
+            });
+
+
+            $(".nav-link[data-page='our-branches']").click(function () {
+                $(".nav-link[data-page='branch1']").click();
+            });
+
+            const coffeeImages = {
+                coffee1: "./coffee1.jpeg",
+                coffee2: "./coffee2.jpeg"
+            };
+
+            $('input[name="coffee"]').change(function () {
+                const selectedCoffee = $(this).val();
+                $('#coffeeImage').attr('src', coffeeImages[selectedCoffee]);
+            });
+
+            $('#submitOrder').click(function () {
+                const name = $('#orderName').val().trim();
+                const selectedCoffee = $('input[name="coffee"]:checked').val();
+
+                if (!name) {
+                    alert('Please enter your name');
+                    $('#orderName').focus();
+                    return;
+                }
+
+                alert(`Thank you ${name}! Your order for ${selectedCoffee} has been placed.`);
+                $('#orderName').val('');
+            });
+        });
+    </script>
+</body>
+
+</html>

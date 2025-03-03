@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+        }
+
+        .navbar {
+            background-color: #000;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar li {
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 15px 10px;
+            display: block;
+        }
+
+        .navbar a:hover {
+            color: #ffff00;
+        }
+
+        .navbar a.active {
+            color: #ffff00;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #000;
+            width: 120px;
+            display: none;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+            width: 100%;
+        }
+
+        .dropdown-menu a {
+            padding: 10px 15px;
+        }
+
+        .content {
+            padding: 50px 80px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#home" class="nav-link" data-page="home">HOME</a></li>
+            <li><a href="#buy-coffee" class="nav-link" data-page="buy-coffee">BUY COFFEE</a></li>
+            <li><a href="#best-articles" class="nav-link" data-page="best-articles">BEST ARTICLES</a></li>
+            <li><a href="#give-feedback" class="nav-link" data-page="give-feedback">GIVE FEEDBACK</a></li>
+            <li><a href="#reviews" class="nav-link" data-page="reviews">REVIEWS</a></li>
+            <li class="dropdown">
+                <a href="#our-branches" class="nav-link" data-page="our-branches">OUR BRANCHES</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#branch1" class="nav-link" data-page="branch1">Branch 1</a></li>
+                    <li><a href="#branch2" class="nav-link" data-page="branch2">Branch 2</a></li>
+                </ul>
+            </li>
+            <li><a href="#contact-us" class="nav-link" data-page="contact-us">CONTACT US</a></li>
+        </ul>
+    </nav>
+
+    <div class="content" id="content">
+        <div id="home" class="page active">
+            <h1>Home Page</h1>
+            <p>Welcome to our website! This is our home page</p>
+        </div>
+
+        <div id="buy-coffee" class="page">
+            <h1>Buy Coffee</h1>
+            <p>Purchase our premium coffee here</p>
+        </div>
+
+        <div id="best-articles" class="page">
+            <h1>Best Articles</h1>
+            <p>Read our best articles about coffee</p>
+        </div>
+
+        <div id="give-feedback" class="page">
+            <h1>Give Feedback</h1>
+            <p>We value your opinion</p>
+        </div>
+
+        <div id="reviews" class="page">
+            <h1>Reviews</h1>
+            <p>See what our customers say about us</p>
+        </div>
+
+        <div id="branch1" class="page">
+            <h1>Branch 1</h1>
+            <p>Our Branch 1 info</p>
+        </div>
+
+        <div id="branch2" class="page">
+            <h1>Branch 2</h1>
+            <p>Our Branch 2 info</p>
+        </div>
+
+        <div id="contact-us" class="page">
+            <h1>Contact us</h1>
+            <p>Contact ABC</p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".page").hide();
+            $("#home").show(); // hide except home
+
+            $(".nav-link[data-page='home']").addClass("active");
+
+            $(".dropdown-menu").hide();
+
+            $(".dropdown").hover(  // dropdown
+                function () {
+                    $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
+                },
+                function () {
+                    $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
+                }
+            );
+
+            $(".nav-link").click(function (e) { // Navigation
+                e.preventDefault();
+                $(".nav-link").removeClass("active");
+                $(this).addClass("active");
+                if ($(this).data("page") === "branch1" || $(this).data("page") === "branch2") {
+                    $(".nav-link[data-page='our-branches']").addClass("active");
+                }
+
+                $(".page").hide();
+
+                $("#" + $(this).data("page")).show();
+            });
+
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                $(".nav-link[data-page='" + hash + "']").click();
+            }
+        });
+    </script>
+</body>
+
+</html>
