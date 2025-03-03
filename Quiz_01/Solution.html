@@ -1,0 +1,141 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+
+<body id="bd">
+    <h1 id="header">Hello: Player Name</h1>
+    <p id="p">Count: 0</p>
+    <form>
+        <input type="text" id="player" placeholder="Player Name...">
+        <button id="sm">Submit</button>
+    </form>
+
+    <select name="mode" id="mode">
+        <option value="Light">Light</option>
+        <option value="Dark">Dark</option>
+    </select>
+
+    <script>
+        let h1 = document.getElementById("header");
+
+        let correct = 0;
+        let turn = 1;
+
+        let mode = document.getElementById("mode"); // time over
+
+        let input = document.getElementById("player");
+        let p = document.getElementById("p");
+        input.addEventListener("keyup", function () {
+
+            let textval = input.value;
+            let count = textval.length;
+            p.innerText = `Count: ${count}`;
+
+            if (textval.length === 0) {
+                h1.innerText = "Hello: Player Name";
+            }
+            else {
+                h1.innerText = `Hello: ${textval}`;
+            }
+        })
+
+        let button = document.getElementById("sm");
+        button.addEventListener("click", function () {
+            let count = input.value.length;
+
+            if (count === 0) {
+                alert("Empty Field error");
+                return;
+            }
+
+            // delete the previous
+            input.remove();
+            p.remove();
+            button.remove();
+            let div = document.createElement("div");
+            div.style.height = "300px";
+            div.style.width = "800px";
+            div.style.borderColor = "black";
+            div.style.border = "1px solid black";
+            div.style.borderRadius = "5px";
+            div.style.margin = "5px 5px 5px 5px"
+            div.style.justifyContent = "center";
+            div.style.alignItems = "center";
+            div.style.display = "flex";
+            div.style.flexDirection = "column";
+            let span1 = document.createElement("span");
+            let span2 = document.createElement("span");
+            span1.id = "sp1"
+            span2.id = "sp2"
+            span1.style.textAlign = "center";
+            span2.style.textAlign = "center";
+            span1.innerText = "Which element is used to create a hyperlink?";
+            span2.innerText = "Options: A) <a>, B) <p>, C) <div>, D) <href>";
+            div.append(span1);
+            div.append(span2);
+
+            let bd = document.getElementById("bd");
+            bd.append(div);
+
+            let inpt = document.createElement("input");
+            let btttn = document.createElement("button");
+            let h4 = document.createElement("h4");
+            h4.innerText = "Question: 1";
+            h4.id = "h4";
+            btttn.innerText = "Next";
+            btttn.id = "btttn";
+            inpt.id = "inpt";
+            inpt.placeholder = "Answer...";
+            bd.append(inpt);
+            bd.append(btttn);
+            bd.append(h4);
+            btttn.addEventListener("click", function () {
+                let inputval = document.getElementById("btttn");
+                let vl = inputval.value;
+                let h = document.getElementById("h4");
+                let span1 = document.getElementById("sp1");
+                let span2 = document.getElementById("sp2");
+
+                if (turn === 3) {
+                    if (vl === "A") {
+                        correct = correct + 1;
+                    }
+
+                    let h5 = document.createElement("h5");
+                    h5.innerText = `Correct: ${correct}`;
+                    bd.append(h5);
+                    inputval.remove();
+                    btttn.remove();
+                    h.remove();
+                    inpt.remove();
+                    return;
+                }
+                if (vl === "A") {
+                    correct = correct + 1;
+                }
+                turn = turn + 1;
+                h4.innerText = `Question: ${turn}`;
+
+                if (turn === 1) {
+                    span1.innerText = "Which CSS property controls the text size?"
+                    span2.innerText = "Options: A) font-pixel, B) text-size, C) font-size, D) text-style"
+                }
+
+                if (turn === 2) {
+                    span1.innerText = "Which JavaScript function logs messages to the console?"
+                    span2.innerText = "Options: A) console.log(), B) alert(), C) print(), D) log.console()"
+                }
+            })
+        })
+
+    </script>
+</body>
+
+</html>
