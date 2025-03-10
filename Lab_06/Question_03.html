@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #212529;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #4361ee;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .demo-area {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .event-container {
+            border: 3px solid #3a0ca3;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: rgba(67, 97, 238, 0.05);
+            position: relative;
+        }
+
+        .event-container::before {
+            content: "Container";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-size: 12px;
+            color: #3a0ca3;
+        }
+
+        .list-container {
+            border: 3px solid #4361ee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: rgba(67, 97, 238, 0.1);
+            position: relative;
+        }
+
+        .list-container::before {
+            content: "<ul> element";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-size: 12px;
+            color: #4361ee;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            margin: 10px 0;
+            padding: 15px;
+            border: 2px solid #f72585;
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        li::before {
+            content: "<li> element";
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background-color: white;
+            padding: 0 8px;
+            font-size: 11px;
+            color: #f72585;
+            border-radius: 4px;
+        }
+
+        li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        li.active {
+            background-color: rgba(247, 37, 133, 0.1);
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #4361ee;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: #212529;
+            border: 1px solid #adb5bd;
+        }
+
+        .btn-warning {
+            background-color: #f8961e;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #ef476f;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #4cc9f0;
+            color: white;
+        }
+
+        .log-panel {
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .log-header {
+            background-color: #212529;
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .log-actions button {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .log-content {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+            height: 400px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+        }
+
+        .log-entry {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #3e4451;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .timestamp {
+            color: #5c6370;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+
+        .capture-log {
+            color: #e5c07b;
+        }
+
+        .bubble-log {
+            color: #61afef;
+        }
+
+        .delegation-log {
+            color: #98c379;
+        }
+
+        .stop-log {
+            color: #e06c75;
+        }
+
+        .info-panel {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .info-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #4361ee;
+        }
+
+        .info-content {
+            font-size: 14px;
+        }
+
+        .event-path {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .path-item {
+            padding: 8px 15px;
+            border: 1px solid #adb5bd;
+            position: relative;
+        }
+
+        .path-item:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            font-weight: bold;
+        }
+
+        .path-item.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-color: #4361ee;
+            font-weight: bold;
+        }
+
+        .phase-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .phase {
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            flex: 1;
+        }
+
+        .phase.capture {
+            background-color: rgba(229, 192, 123, 0.2);
+            color: #d19a66;
+        }
+
+        .phase.target {
+            background-color: rgba(224, 108, 117, 0.2);
+            color: #e06c75;
+        }
+
+        .phase.bubble {
+            background-color: rgba(97, 175, 239, 0.2);
+            color: #61afef;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .checkbox-container input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .flash {
+            animation: flash 0.5s;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: rgba(247, 37, 133, 0.2);
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 1px dotted #adb5bd;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #212529;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Event Bubbling, Capturing & Delegation Visualizer</h1>
+            <p class="subtitle">Click on list items to see events in action</p>
+        </header>
+
+        <div class="content">
+            <div class="demo-area">
+                <div class="event-container" id="container">
+                    <div class="list-container" id="list-container">
+                        <ul id="list">
+                            <li data-id="1">List Item 1</li>
+                            <li data-id="2">List Item 2</li>
+                            <li data-id="3">List Item 3</li>
+                        </ul>
+                    </div>
+
+                    <div class="controls">
+                        <button id="add-item" class="btn-primary">
+                            <span>Add New Item</span>
+                        </button>
+                        <button id="toggle-propagation" class="btn-warning">
+                            <span>Stop Propagation: OFF</span>
+                        </button>
+                        <button id="clear-items" class="btn-danger">
+                            <span>Clear Items</span>
+                        </button>
+                    </div>
+
+                    <div class="info-panel">
+                        <div class="info-title">Event Flow Visualization</div>
+                        <div class="phase-indicator">
+                            <div class="phase capture">Capturing Phase ↓</div>
+                            <div class="phase target">Target Phase ●</div>
+                            <div class="phase bubble">Bubbling Phase ↑</div>
+                        </div>
+
+                        <div class="event-path">
+                            <div class="path-item" id="path-window">Window</div>
+                            <div class="path-item" id="path-document">Document</div>
+                            <div class="path-item" id="path-container">Container</div>
+                            <div class="path-item" id="path-ul">UL</div>
+                            <div class="path-item" id="path-li">LI</div>
+                        </div>
+
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="use-capture" />
+                            <label for="use-capture">Use Capture Phase for All Listeners</label>
+                            <span class="tooltip">?
+                                <span class="tooltip-text">When checked, all event listeners will use the capturing
+                                    phase instead of the default bubbling phase.</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="log-panel">
+                <div class="log-header">
+                    <div class="log-title">
+                        <span>Event Log</span>
+                    </div>
+                    <div class="log-actions">
+                        <button id="clear-log" class="btn-secondary">Clear Log</button>
+                    </div>
+                </div>
+                <div class="log-content" id="log"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const listContainer = document.getElementById('list-container');
+        const list = document.getElementById('list');
+        const addItemButton = document.getElementById('add-item');
+        const togglePropagationButton = document.getElementById('toggle-propagation');
+        const clearItemsButton = document.getElementById('clear-items');
+        const clearLogButton = document.getElementById('clear-log');
+        const logContent = document.getElementById('log');
+        const useCaptureCheckbox = document.getElementById('use-capture');
+        const pathItems = {
+            window: document.getElementById('path-window'),
+            document: document.getElementById('path-document'),
+            container: document.getElementById('path-container'),
+            ul: document.getElementById('path-ul'),
+            li: document.getElementById('path-li')
+        };
+
+        let itemCount = 3;
+        let stopPropagation = false;
+        let useCapture = false;
+
+        function getTimestamp() {
+            const now = new Date();
+            return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}`;
+        }
+
+        function logEvent(phase, element, event) {
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+
+            const timestamp = document.createElement('span');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = getTimestamp();
+
+            const content = document.createElement('span');
+
+            if (phase === 'bubble') {
+                content.className = 'bubble-log';
+                content.textContent = `BUBBLING: ${element} (ID: ${event.target.dataset.id || 'N/A'})`;
+            } else if (phase === 'capture') {
+                content.className = 'capture-log';
+                content.textContent = `CAPTURING: ${element} (ID: ${event.target.dataset.id || 'N/A'})`;
+            } else if (phase === 'delegation') {
+                content.className = 'delegation-log';
+                content.textContent = `DELEGATION: ${element} (ID: ${event.target.dataset.id || 'N/A'})`;
+            } else if (phase === 'stop') {
+                content.className = 'stop-log';
+                content.textContent = `PROPAGATION STOPPED at ${element}`;
+            }
+
+            logEntry.appendChild(timestamp);
+            logEntry.appendChild(content);
+
+            logContent.appendChild(logEntry);
+            logContent.scrollTop = logContent.scrollHeight;
+
+            console.log(`${timestamp.textContent} - ${content.textContent}`);
+        }
+
+        function flashElement(element) {
+            element.classList.add('flash');
+            setTimeout(() => {
+                element.classList.remove('flash');
+            }, 500);
+        }
+
+        function highlightPath(elementType) {
+            Object.values(pathItems).forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (pathItems[elementType]) {
+                pathItems[elementType].classList.add('active');
+            }
+        }
+
+        function setupEventListeners() {
+            container.removeEventListener('click', containerClickHandler, useCapture);
+            listContainer.removeEventListener('click', listContainerClickHandler, useCapture);
+            list.removeEventListener('click', listClickHandler, useCapture);
+            list.removeEventListener('click', delegationHandler);
+
+            container.addEventListener('click', containerClickHandler, useCapture);
+            listContainer.addEventListener('click', listContainerClickHandler, useCapture);
+            list.addEventListener('click', listClickHandler, useCapture);
+
+            list.addEventListener('click', delegationHandler);
+
+            document.querySelectorAll('#list li').forEach(item => {
+                item.removeEventListener('click', liClickHandler, useCapture);
+                item.addEventListener('click', liClickHandler, useCapture);
+            });
+        }
+
+        function containerClickHandler(event) {
+            const phase = useCapture ? 'capture' : 'bubble';
+            logEvent(phase, 'Container', event);
+            highlightPath('container');
+            flashElement(container);
+        }
+
+        function listContainerClickHandler(event) {
+            const phase = useCapture ? 'capture' : 'bubble';
+            logEvent(phase, 'List Container', event);
+            highlightPath('container');
+            flashElement(listContainer);
+        }
+
+        function listClickHandler(event) {
+            const phase = useCapture ? 'capture' : 'bubble';
+            logEvent(phase, 'UL Element', event);
+            highlightPath('ul');
+            flashElement(list);
+        }
+
+        function liClickHandler(event) {
+            const phase = useCapture ? 'capture' : 'bubble';
+            logEvent(phase, 'LI Element', event);
+            highlightPath('li');
+
+            if (stopPropagation) {
+                event.stopPropagation();
+                logEvent('stop', 'LI Element', event);
+            }
+        }
+
+        function delegationHandler(event) {
+            if (event.target.tagName === 'LI') {
+                logEvent('delegation', `${event.target.textContent}`, event);
+                event.target.classList.add('active');
+                setTimeout(() => {
+                    event.target.classList.remove('active');
+                }, 1000);
+            }
+        }
+
+        setupEventListeners();
+        addItemButton.addEventListener('click', function () {
+            itemCount++;
+            const newItem = document.createElement('li');
+            newItem.textContent = `List Item ${itemCount}`;
+            newItem.dataset.id = itemCount;
+            list.appendChild(newItem);
+            newItem.addEventListener('click', liClickHandler, useCapture);
+
+            logEvent('info', `Added new item with ID: ${itemCount}`, { target: { dataset: { id: itemCount } } });
+        });
+
+        togglePropagationButton.addEventListener('click', function () {
+            stopPropagation = !stopPropagation;
+            this.textContent = `Stop Propagation: ${stopPropagation ? 'ON' : 'OFF'}`;
+            this.className = stopPropagation ? 'btn-danger' : 'btn-warning';
+
+            logEvent('info', `Stop Propagation set to: ${stopPropagation}`, { target: { dataset: { id: 'N/A' } } });
+        });
+
+        clearItemsButton.addEventListener('click', function () {
+            while (list.firstChild) {
+                list.removeChild(list.firstChild);
+            }
+            itemCount = 0;
+
+            logEvent('info', 'All items cleared', { target: { dataset: { id: 'N/A' } } });
+        });
+
+        clearLogButton.addEventListener('click', function () {
+            logContent.innerHTML = '';
+        });
+
+        useCaptureCheckbox.addEventListener('change', function () {
+            useCapture = this.checked;
+            setupEventListeners();
+
+            logEvent('info', `Use Capture Phase set to: ${useCapture}`, { target: { dataset: { id: 'N/A' } } });
+        });
+    </script>
+</body>
+
+</html>
