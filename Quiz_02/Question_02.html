@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Game (L227971)</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h2,
+        h3 {
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 10px;
+            margin: 8px 0;
+            background: #f1f1f1;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background: #e2e2e2;
+        }
+
+        .option.selected {
+            background: #cce5ff;
+        }
+
+        #nextQuestion,
+        #restartQuiz {
+            padding: 10px 20px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #timer {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Quiz Game</h2>
+    <div id="quizBox">
+        <p id="question"></p>
+        <div id="options"></div>
+        <p id="timer">Time Left: 10</p>
+        <button id="nextQuestion">Next</button>
+    </div>
+
+    <div id="resultBox" class="hidden">
+        <h3>Your Score: <span id="score"></span>/5</h3>
+        <button id="restartQuiz">Restart Quiz</button>
+    </div>
+
+    <script>
+        const quizData = [
+            { q: "What is 2 + 2?", options: ["3", "4", "5", "6"], correct: 1 },
+            { q: "Capital of France?", options: ["eIFFLE tOWER", "Val", "Hello", "Pakistan"], correct: 2 },
+            { q: "HTML stands for?", options: ["CSS", "HTTP", "HTML", "JS"], correct: 2 },
+            { q: "Who developed jQuery?", options: ["Google", "Microsoft", "IBM", "fAST"], correct: 3 },
+            { q: "Which is not a programming language?", options: ["Python", "Java", "HTML", "C++"], correct: 2 }
+        ];
+
+        let currentQuestion = 0, score = 0, timer;
+        let userAnswers = [];
+
+        function loadQuestion() {
+            if (currentQuestion >= quizData.length) {
+                showResult();
+                return;
+            }
+            let qData = quizData[currentQuestion];
+            $("#question").text(qData.q);
+            $("#options").empty();
+            qData.options.forEach((opt, idx) => {
+                $("#options").append(`<div class="option" data-index="${idx}">${opt}</div>`);
+            });
+            startTimer();
+        }
+
+        function startTimer() {
+            let timeLeft = 10;
+            $("#timer").text("Time Left: " + timeLeft);
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                $("#timer").text("Time Left: " + timeLeft);
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    userAnswers.push(null);
+                    currentQuestion++;
+                    loadQuestion();
+                }
+            }, 1000);
+        }
+
+        $("#options").on("click", ".option", function () {
+            $(".option").removeClass("selected");
+            $(this).addClass("selected");
+        });
+
+        $("#nextQuestion").click(() => {
+            let selected = $(".option.selected").data("index");
+            userAnswers.push(selected !== undefined ? selected : null);
+            clearInterval(timer);
+            currentQuestion++;
+            loadQuestion();
+        });
+
+        function showResult() {
+            let correctCount = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans === quizData[idx].correct) correctCount++;
+            });
+            $("#score").text(correctCount);
+            $("#quizBox").addClass("hidden");
+            $("#resultBox").removeClass("hidden");
+        }
+
+        $("#restartQuiz").click(() => {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            $("#quizBox").removeClass("hidden");
+            $("#resultBox").addClass("hidden");
+            loadQuestion();
+        });
+
+        $(document).ready(loadQuestion);
+    </script>
+
+</body>
+
+</html>

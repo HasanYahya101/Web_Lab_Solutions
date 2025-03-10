@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List (L227971)</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Enter a new task">
+    <button id="addTask">Add Task</button>
+    <button id="clearAll">Clear All</button>
+
+    <ul id="taskList"></ul>
+
+    <script>
+        function loadTasks() {
+            let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            $("#taskList").empty();
+            tasks.forEach((task, index) => {
+                $("#taskList").append(`<li>${task} <button class="delete-btn" onclick="deleteTask(${index})">Delete</button></li>`);
+            });
+        }
+
+        function addTask() {
+            let task = $("#taskInput").val().trim();
+            if (task) {
+                let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+                tasks.push(task);
+                localStorage.setItem("tasks", JSON.stringify(tasks));
+                $("#taskInput").val('');
+                loadTasks();
+            } else {
+                alert("Please enter a task.");
+            }
+        }
+
+        function deleteTask(index) {
+            let tasks = JSON.parse(localStorage.getItem("tasks"));
+            tasks.splice(index, 1);
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        function clearAllTasks() {
+            localStorage.removeItem("tasks");
+            loadTasks();
+        }
+
+        $("#addTask").click(addTask);
+        $("#clearAll").click(clearAllTasks);
+        $(document).ready(loadTasks);
+    </script>
+
+</body>
+
+</html>
